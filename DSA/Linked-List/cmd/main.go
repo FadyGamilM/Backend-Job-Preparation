@@ -48,4 +48,10 @@ func main() {
 	log.Printf("node 4 : %v", node4)
 
 	linkedList.Explore()
+
+	linkedList.DeleteByValue("sa3ed")
+
+	log.Println("after deletion...")
+
+	linkedList.Explore()
 }

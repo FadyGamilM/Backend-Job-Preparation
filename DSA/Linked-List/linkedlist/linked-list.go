@@ -67,3 +67,43 @@ func (l LinkedList) Explore() {
 		currNode = *currNode.next
 	}
 }
+
+func (l *LinkedList) DeleteByValue(valToDelete string) {
+	currNode := l.head
+	prevNode := &node{}
+	nextNode := &node{}
+
+	if currNode.val == valToDelete {
+		l.head = currNode.next
+		l.length--
+		return
+	}
+
+	// start from the node number 2 (after the head node)
+	//  curr  -> nil
+	//	[1]   -> [2] -> [3] -> [4]
+
+	// the nextNode should be updated to the currNode
+	//  the currNode should be updated to the nextNode
+	// the prevNode should be updated to the currNode
+	//  prev  -> curr  -> next -> nil
+	//	[1]   -> [2]   -> [3]  -> [4]
+	prevNode = currNode
+	currNode = currNode.next
+	nextNode = currNode.next
+
+	for i := 1; i < l.length; i++ {
+		if currNode.val == valToDelete {
+			prevNode.next = nextNode
+			l.length--
+			return
+		}
+		if currNode.next != nil {
+			prevNode = currNode
+			currNode = currNode.next
+			nextNode = currNode.next
+		} else {
+			return
+		}
+	}
+}
