@@ -2,7 +2,8 @@ package main
 
 import "log"
 
-func twoSum(nums []int, target int) []int {
+// this version is for returning the numbers themselves
+func twoSum_returns_numbers(nums []int, target int) []int {
 	// base cases when we have an empty array or array of length = 1 => we have no result so we will return nil
 	if len(nums) < 2 {
 		return nil
@@ -34,6 +35,25 @@ func twoSum(nums []int, target int) []int {
 	return nil
 }
 
+func twoSum(nums []int, target int) []int {
+	// base cases when we have an empty array or array of length = 1 => we have no result so we will return nil
+	if len(nums) < 2 {
+		return nil
+	}
+
+	hashMap := make(map[int]int, 0)
+	for i := 0; i < len(nums); i++ {
+		_, ok := hashMap[nums[i]]
+		if ok {
+			return []int{hashMap[nums[i]], i}
+		} else {
+			// store the one which completes it
+			hashMap[target-nums[i]] = i
+		}
+	}
+	return nil
+}
+
 func main() {
-	log.Println(twoSum([]int{2, 50, 7, 15}, 9))
+	log.Println(twoSum([]int{2, 50, 30, 7}, 9))
 }
