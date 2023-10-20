@@ -1,6 +1,8 @@
 package main
 
-import "log"
+import (
+	"log"
+)
 
 // Failed !! not covering every corner case .. but its good way of thinking btw
 func lengthOfLongestSubstring_v2(s string) int {
@@ -35,7 +37,7 @@ func lengthOfLongestSubstring_v2(s string) int {
 	return max
 }
 
-func lengthOfLongestSubstring(s string) int {
+func lengthOfLongestSubstring_bruteforce(s string) int {
 	max := 0
 	curr := 0
 	store := make(map[string]bool)
@@ -68,9 +70,45 @@ func lengthOfLongestSubstring(s string) int {
 	return max
 }
 
+func lengthOfLongestSubstring(s string) int {
+	curr, max := 0, 0
+	store := make(map[rune]bool)
+	window := make([]rune, 0)
+	for _, char := range s {
+		if store[char] {
+			// check the last max we got before start shiftting my window
+			if max < curr {
+				max = curr
+			}
+			// start shiftting untile i got a new unique substring
+			for store[char] {
+				curr--
+				shifttedChar := window[0]
+				window = window[1:]
+				// remove this char from the store hash table
+				delete(store, shifttedChar)
+			}
+			// now add the character that made this confusion and increase the current length of the current unique substring
+			curr++
+			window = append(window, char)
+			// add it to the hash table too
+			store[char] = true
+		} else {
+			curr++
+			window = append(window, char)
+			store[char] = true
+		}
+	}
+	if max < curr {
+		max = curr
+	}
+	return max
+}
+
 func main() {
 	log.Println(lengthOfLongestSubstring("abbsa"))
 	log.Println(lengthOfLongestSubstring("aaaaaa"))
 	log.Println(lengthOfLongestSubstring(""))
 	log.Println(lengthOfLongestSubstring("dvdf"))
+	log.Println(lengthOfLongestSubstring("pwwkew"))
 }
