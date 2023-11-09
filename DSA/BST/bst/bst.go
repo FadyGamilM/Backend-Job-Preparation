@@ -1,4 +1,4 @@
-package main
+package bst
 
 import (
 	"strconv"
@@ -21,7 +21,7 @@ func NewBST(r *node) *bst {
 }
 
 // fidn the min node in whatever the tree/subtree given and used in the remove method
-func (bst bst) findMin(root *node) *node {
+func (bst bst) FindMin(root *node) *node {
 	curr := root
 	for curr != nil && curr.left != nil {
 		curr = curr.left
@@ -29,7 +29,7 @@ func (bst bst) findMin(root *node) *node {
 	return curr
 }
 
-func (bst *bst) remove(root *node, val int) *node {
+func (bst *bst) Remove(root *node, val int) *node {
 	return bst.remove_logic(root, val)
 }
 
@@ -55,7 +55,7 @@ func (bst *bst) remove_logic(root *node, val int) *node {
 		} else if root.left != nil && root.right == nil {
 			return root.left
 		} else { // when it has 2 childs [baad]
-			minNodeFromRightSubTree := bst.findMin(root.right)
+			minNodeFromRightSubTree := bst.FindMin(root.right)
 			root.val = minNodeFromRightSubTree.val
 			root.right = bst.remove_logic(root.right, minNodeFromRightSubTree.val)
 		}
@@ -65,25 +65,25 @@ func (bst *bst) remove_logic(root *node, val int) *node {
 
 // the wrapper
 func (bst bst) InOrderTraverse(sb *strings.Builder) {
-	bst.InOrderTraverse_Logic(sb, bst.root)
+	bst.inOrderTraverse_Logic(sb, bst.root)
 }
 
 // the actual algorithm (inner work)
-func (bst bst) InOrderTraverse_Logic(sb *strings.Builder, currRoot *node) {
+func (bst bst) inOrderTraverse_Logic(sb *strings.Builder, currRoot *node) {
 	// Base Case => if null return
 	if currRoot == nil {
 		return
 	}
 
 	// work on the left
-	bst.InOrderTraverse_Logic(sb, currRoot.left)
+	bst.inOrderTraverse_Logic(sb, currRoot.left)
 	// then work on the current node itself (the work on means do what you need to do with the node, here we need to print (traverse) the node so we add it to the builder)
 	sb.WriteString(strconv.Itoa(currRoot.val) + " => ")
 	// then work on the right
-	bst.InOrderTraverse_Logic(sb, currRoot.right)
+	bst.inOrderTraverse_Logic(sb, currRoot.right)
 }
 
-func (bst *bst) add(v int) {
+func (bst *bst) Add(v int) {
 	bst.root = bst.add_logic(bst.root, v)
 	bst.length++
 }
@@ -93,7 +93,7 @@ func (bst *bst) add_logic(root *node, v int) *node {
 	// if the tree is empty, so the root is nil
 	// -> create a new node and return it to be the root
 	if root == nil {
-		n := newNode(v)
+		n := NewNode(v)
 		return n
 	}
 
@@ -107,7 +107,7 @@ func (bst *bst) add_logic(root *node, v int) *node {
 	return root
 }
 
-func (bst bst) search(v int) (*node, bool) {
+func (bst bst) Search(v int) (*node, bool) {
 	return bst.search_logic(bst.root, v)
 }
 

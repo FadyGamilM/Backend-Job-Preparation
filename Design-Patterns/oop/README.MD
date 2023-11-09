@@ -99,3 +99,104 @@ const middleware_2 = (req:Request, res:Response, next:NextFunction) => {
 app.use(middleware_1)
 app.use(middleware_2)
 ```
+
+# What is the `SRP` ?
+➜ SRP stands for Single Responsibility Pattern <br>
+➜ A class should only have one reason to change <br>
+`User` class should only be concerned of managing the attributes of the user, but we shouldn't define any method related to authenticating the user.
+```ts
+class User {
+    constructor(
+        private name : string, 
+        private age : number
+    ){}
+
+    // getters and setters to deal with user properties
+}
+
+class UserAuth {
+    constructor(
+        private u : User
+    ){}
+
+    register() : bool {
+        // impl of registeration of an user
+    }
+}
+```
+
+# What is the `OCP` ?
+➜ OCP stands for Open Closed Principl, which means the functionality is open for extension closed for modification <br>
+➜ Bad Design : <br>
+```ts
+ // open closed principle 
+
+ //! [X] Bad Design 
+class User {
+    constructor(private username: string, private _role : string ){}
+
+    // HINT : the field must be named differently than the getter property ...
+    public get role () : string {
+        return this._role
+    } 
+}
+
+class Discount {
+    giveDiscount(user: User) : number{
+        if (user.role == "ADMIN") {
+            return 50
+        }else if (user.role == "REGULAR"){
+            return 20
+        }else {
+            return 10
+        }
+    }
+}
+```
+now if we need to add new type of users, we will open the `giveDiscount` function and modify it which is wrong. <br>
+
+➜ Good Design : <br>
+```ts
+// Good Design 
+interface IUser {
+    username : string 
+    role : string 
+
+    getDiscount() : number
+}
+
+class RegularUser implements IUser {
+    username: string; 
+    role: string;
+    constructor(username :string ){
+        this.role = "REGULAR"
+        this.username = username;
+    }
+
+    // the impl of the discount is set here not conditonially in the DIscount class 
+    public getDiscount() : number { 
+        return 20
+    }
+}
+
+
+class AdminUser implements IUser {
+    username: string; 
+    role: string;
+    constructor(username :string ){
+        this.role = "ADMIN"
+        this.username = username;
+    }
+
+    // the impl of the discount is set here not conditonially in the DIscount class 
+    public getDiscount() : number { 
+        return 50
+    }
+}
+
+class Discount_V2 {
+    giveDiscount(user : IUser) {
+        return user.getDiscount()
+    }
+}
+```
