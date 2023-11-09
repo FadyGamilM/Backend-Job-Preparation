@@ -1,4 +1,4 @@
-package main
+package bst
 
 type node struct {
 	val   int
@@ -6,7 +6,7 @@ type node struct {
 	right *node
 }
 
-func newNode(v int) *node {
+func NewNode(v int) *node {
 	return &node{
 		val:   v,
 		left:  nil,
