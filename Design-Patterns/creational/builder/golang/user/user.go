@@ -58,16 +58,16 @@ func NewUserDirector(b IUserBuilder) *UserDirector {
 	}
 }
 
-func (ud *UserDirector) BuildRegularUser() {
-	ud.builder.Email("fady@email.com")
-	ud.builder.Username("fadygamilm")
-	ud.builder.Password("123456789")
+func (ud *UserDirector) BuildRegularUser(email, username, password string) {
+	ud.builder.Email(email)
+	ud.builder.Username(username)
+	ud.builder.Password(password)
 	ud.builder.Role("REGULAR")
 }
 
-func (ud *UserDirector) BuildAdminUser() {
-	ud.builder.Email("fady@email.com")
-	ud.builder.Username("fadygamilm")
-	ud.builder.Password("123456789")
+func (ud *UserDirector) BuildAdminUser(email, username, password string) {
+	ud.builder.Email(email)
+	ud.builder.Username(username)
+	ud.builder.Password(password)
 	ud.builder.Role("ADMIN")
 }
