@@ -12,7 +12,7 @@ func main() {
 	// instantiate an instance of the director
 	uDirector := user.NewUserDirector(uBuilder)
 
-	uDirector.BuildRegularUser()
+	uDirector.BuildRegularUser("fady@mail.con", "fgm", "123456789")
 
 	user := uBuilder.GetUser()
 
